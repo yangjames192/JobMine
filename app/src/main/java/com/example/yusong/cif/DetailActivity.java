@@ -9,7 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListView;
 
+import com.example.yusong.cif.adapter.DetailListViewAdapter;
 import com.example.yusong.cif.model.JobShortList;
 
 import org.jsoup.Connection;
@@ -25,7 +27,11 @@ public class DetailActivity extends AppCompatActivity {
 
     public String userName;
     public String pass;
-    ProgressDialog progress;
+    public ProgressDialog progress;
+    public DetailListViewAdapter adapter;
+    public ListView lv;
+    public ArrayList<JobShortList> jobShortLists;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +43,18 @@ public class DetailActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         pass = intent.getStringExtra("pass");
 
-        progress = new ProgressDialog(this);
+        jobShortLists = new ArrayList<JobShortList>();
+        adapter = new DetailListViewAdapter(this, jobShortLists);
+        lv = (ListView) findViewById(R.id.listView);
+        lv.setAdapter(adapter);
 
         new AddStringTask().execute();
+
+        progress = new ProgressDialog(this);
         progress.show();
     }
 
-    class AddStringTask extends AsyncTask<Void, String, Void> {
+    class AddStringTask extends AsyncTask<Void, JobShortList, Void> {
         @Override
         protected Void doInBackground(Void... unused) {
 
@@ -89,7 +100,6 @@ public class DetailActivity extends AppCompatActivity {
 
                     Element table = iframeContentDoc.select("table[id=UW_CO_STUJOBLST$scrolli$0]").get(1);
 
-                    List<JobShortList> jobShortList = new ArrayList<JobShortList>();
 
                     for (int i = 0; i < numApps; ++i) {
                         JobShortList job = new JobShortList(
@@ -101,13 +111,10 @@ public class DetailActivity extends AppCompatActivity {
                                 table.select("span[id=UW_CO_APPLY_HL$span$" + i + "]").text(),
                                 table.select("span[id=UW_CO_JSLIST_VW_UW_CO_CHAR_DATE$" + i + "]").text(),
                                 table.select("span[id=UW_CO_JOBAPP_CT_UW_CO_MAX_RESUMES$" + i + "]").text());
+                        publishProgress(job);
 
-                        jobShortList.add(job);
                     }
 
-                    for(int i = 0; i < jobShortList.size(); ++i) {
-                        System.out.println(jobShortList.get(i));
-                    }
                 }
 
 
@@ -118,8 +125,9 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(String... item) {
-
+        protected void onProgressUpdate(JobShortList... item) {
+            adapter.add(item[0]);
+            adapter.notifyDataSetChanged();
         }
 
         @Override

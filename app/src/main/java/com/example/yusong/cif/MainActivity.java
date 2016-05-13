@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         EditText userName =  ((EditText)findViewById(R.id.user));
         EditText pass = ((EditText)findViewById(R.id.passID));
 
-        System.out.println(userName);
-        System.out.println(pass);
         intent.putExtra("userName",userName.getText().toString());
         intent.putExtra("pass", pass.getText().toString());
 

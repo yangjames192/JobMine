@@ -1,6 +1,7 @@
 package com.example.yusong.cif.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,10 @@ public class DetailListViewAdapter extends BaseAdapter {
         company.setText(job.employerName);
         location.setText(job.location);
         lastDay.setText(job.lastDateApply);
+
+        if(job.apply.equals("Already Applied")) {
+            rowView.setBackgroundColor(Color.parseColor("#7CFC00"));
+        }
 
         return rowView;
     }

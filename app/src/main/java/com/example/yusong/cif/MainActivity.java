@@ -1,8 +1,10 @@
 package com.example.yusong.cif;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,20 +39,34 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("User", 0);
+        if(pref.getBoolean("isLoggedIn", false)) {
+            startDetailActivity(pref.getString("userName", "0"), pref.getString("pass", "0"));
+        }
     }
 
     public void goToMain(View view) {
-        Intent intent = new Intent(this, DetailActivity.class);
-
         EditText userName =  ((EditText)findViewById(R.id.user));
         EditText pass = ((EditText)findViewById(R.id.passID));
+        String user = userName.getText().toString();
+        String password = pass.getText().toString();
 
-        intent.putExtra("userName",userName.getText().toString());
-        intent.putExtra("pass", pass.getText().toString());
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("User", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("isLoggedIn", true);
+        editor.putString("userName", user);
+        editor.putString("pass", password);
+        editor.commit();
 
-        startActivity(intent);
+        startDetailActivity(user, password);
     }
 
+    public void startDetailActivity(String user, String password) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("userName", user);
+        intent.putExtra("pass", password);
+        startActivity(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.yusong.cif.callback.AsyncTaskCallbackInterface;
+import com.example.yusong.cif.model.JobShortList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Yusong on 2016-05-14.
@@ -19,11 +25,12 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
     private Activity mActivity;
     private AsyncTaskCallbackInterface mAsyncTaskCallbackInterface;
-
+    public ArrayList<JobShortList> jobShortLists;
 
     public JobFetchTask(Activity activity, AsyncTaskCallbackInterface asyncTaskCallbackInterface) {
         this.mActivity = activity;
         mAsyncTaskCallbackInterface = asyncTaskCallbackInterface;
+        jobShortLists = new ArrayList<JobShortList>();
     }
 
     @Override
@@ -43,65 +50,64 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
     private Bundle fetchJob(Bundle bundle) {
 
         try{
-            /*bundle.putBoolean("valid_return", false);
+            String loginUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/?cmd=login";
+            Connection.Response res = Jsoup
+                    .connect(loginUrl)
+                    .data("userid", "y294yang")
+                    .data("pwd", "Yys@19920606")
+                    .data("submit", "Submit")
+                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                    .method(Connection.Method.POST).timeout(5000).execute();
 
-            bundle.putString("title", data.getJSONObject(0).getString("title"));
-            bundle.putString("courseName", data.getJSONObject(0).getString("subject") + " " +
-                    data.getJSONObject(0).getString("catalog_number"));
-            bundle.putParcelableArrayList(Constants.lectureSectionObjectListKey, lectures);
-            bundle.putParcelableArrayList(Constants.tutorialObjectListKey, tutorials);
-            bundle.putParcelableArrayList(Constants.testObjectListKey, tests);
+            Map<String, String> loginCookies = res.cookies();
 
-            String current_term = (String) Connections.getTerms().get(1);
+            //Now you can parse any page you want, as long as you pass the cookies
+            String url = "https://jobmine.ccol.uwaterloo.ca/psp/SS/EMPLOYEE/WORK/c/UW_CO_STUDENTS.UW_CO_JOB_SLIST.GBL?pslnkid=UW_CO_JOB_SLIST_LINK&FolderPath=PORTAL_ROOT_OBJECT.UW_CO_JOB_SLIST_LINK&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder";
+            Document doc = Jsoup
+                    .connect(url)
+                    .followRedirects(true)
+                    .ignoreContentType(true)
+                    .maxBodySize(0)
+                    .timeout(6000)
+                    .cookies(loginCookies)
+                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                    .execute().parse();
 
-            // get exam JSONBObject
-            String exam_url = Connections.getExamsURL(current_term);
-            JSONObject examObject = Connections.getJSON_from_url(exam_url);
+            Element iframe = doc.select("iframe").first();
+            String iframeSrc = iframe.attr("src");
 
-            if (examObject != null) {
-                JSONArray examData = examObject.getJSONArray("data");
+            if(iframeSrc != null)
+            {
+                Document iframeContentDoc = Jsoup.connect(iframeSrc).followRedirects(true)
+                        .ignoreContentType(true)
+                        .maxBodySize(0)
+                        .timeout(6000)
+                        .cookies(loginCookies)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").get();
 
-                for (int i = 0; i < examData.length(); i++) {
-                    if (examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))) {
-                        bundle.putBoolean("has_finals", true);
-                        JSONArray exam_sections = examData.getJSONObject(i).getJSONArray("sections");
-                        for (int j = 0; j < exam_sections.length(); j++) {
-                            FinalObject finalObject = new FinalObject();
+                Element numApp = iframeContentDoc.select("span[class=PSGRIDCOUNTER]").first();
 
-                            String section = exam_sections.getJSONObject(j).getString("section");
+                int numApps = Integer.parseInt(numApp.text().split(" ")[2]);
 
-                            finalObject.setSection(section);
-                            if (!section.contains("Online")) {
-                                finalObject.setTime(exam_sections.getJSONObject(j).getString("start_time") + "-" +
-                                        exam_sections.getJSONObject(j).getString("end_time"));
-                                finalObject.setLocation(exam_sections.getJSONObject(j).getString("location"));
-                                finalObject.setDate(exam_sections.getJSONObject(j).getString("date"));
-                                finalObject.setIsOnline(false);
-                            } else {
-                                finalObject.setIsOnline(true);
-                            }
-                            finals.add(finalObject);
-                        }
-                    }
+                Element table = iframeContentDoc.select("table[id=UW_CO_STUJOBLST$scrolli$0]").get(1);
+
+
+                for (int i = 0; i < numApps; ++i) {
+                    JobShortList job = new JobShortList(
+                            table.select("span[id=UW_CO_STUJOBLST_UW_CO_JOB_ID$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JOBTITLE_HL$span$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JSLIST_VW_UW_CO_PARENT_NAME$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JSLIST_VW_UW_CO_EMPLYR_NAME1$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JSLIST_VW_UW_CO_WORK_LOCATN$" + i + "]").text(),
+                            table.select("span[id=UW_CO_APPLY_HL$span$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JSLIST_VW_UW_CO_CHAR_DATE$" + i + "]").text(),
+                            table.select("span[id=UW_CO_JOBAPP_CT_UW_CO_MAX_RESUMES$" + i + "]").text());
+
+                    jobShortLists.add(job);
                 }
-                bundle.putParcelableArrayList(Constants.finalObjectListKey, finals);
+
             }
-
-            // Fetch course information (description, etc)
-            JSONObject courseInfoObject = Connections.getJSON_from_url(Connections.getCourseInfoURL(input));
-            JSONObject courseObject = courseInfoObject.getJSONObject("data");
-
-            bundle.putString("description", courseObject.getString("description"));
-            String prerequisites = courseObject.getString("prerequisites");
-            String antirequisites = courseObject.getString("antirequisites");
-
-            if (prerequisites != null && !prerequisites.equals("null")) {
-                bundle.putString("prerequisites", prerequisites);
-            }
-
-            if (antirequisites != null && !antirequisites.equals("null")) {
-                bundle.putString("antirequisites", antirequisites);
-            }*/
+            bundle.putParcelableArrayList("jobShortList", jobShortLists);
 
             return bundle;
 

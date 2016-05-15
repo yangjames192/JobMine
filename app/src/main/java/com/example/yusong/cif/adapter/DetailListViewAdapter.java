@@ -2,14 +2,12 @@ package com.example.yusong.cif.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.yusong.cif.MainActivity;
 import com.example.yusong.cif.R;
 import com.example.yusong.cif.model.JobShortList;
 
@@ -26,9 +24,9 @@ public class DetailListViewAdapter extends BaseAdapter {
     private static LayoutInflater inflater=null;
 
     // constructor
-    public DetailListViewAdapter(AppCompatActivity activity, ArrayList<JobShortList> jobShortLists) {
+    public DetailListViewAdapter(Context context, ArrayList<JobShortList> jobShortLists) {
         this.jobShortLists = jobShortLists;
-        this.context=activity;
+        this.context=context;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

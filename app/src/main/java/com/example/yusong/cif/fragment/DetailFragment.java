@@ -84,10 +84,6 @@ public class DetailFragment extends Fragment {
     }
 
     private void generateView() {
-        /*Bundle bundle = new Bundle();
-        setupTabs(bundle);
-        LinearLayout searchLayout = (LinearLayout) mView.findViewById(R.id.search_detail_layout);
-        searchLayout.setVisibility(View.VISIBLE);*/
         showProgressDialog();
 
 

@@ -1,22 +1,16 @@
 package com.example.yusong.cif.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.example.yusong.cif.R;
+import com.example.yusong.cif.adapter.DetailListViewAdapter;
+import com.example.yusong.cif.model.JobShortList;
 
 import java.util.ArrayList;
 
@@ -27,8 +21,9 @@ public class JobShortListFragment extends Fragment {
     private Activity mActivity;
     private View mView;
     private Bundle mFetchedResult;
-    private boolean mCourseTaken;
-    private String mTakenCourseNumber;
+    public ArrayList<JobShortList> jobShortLists;
+    public DetailListViewAdapter adapter;
+    public ListView lv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,65 +37,21 @@ public class JobShortListFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.job_short_list_fragment, container, false);
 
-        //setupLists();
-
+        jobShortLists = new ArrayList<JobShortList>();
+        adapter = new DetailListViewAdapter(getActivity(), jobShortLists);
+        lv = (ListView) mView.findViewById(R.id.listView);
+        lv.setAdapter(adapter);
+        setupLists();
 
         return mView;
     }
 
     private void setupLists() {
-/*
-        // get default divider
-        int[] attrs = {android.R.attr.listDivider};
-        TypedArray ta = mActivity.obtainStyledAttributes(attrs);
-        Drawable divider = ta.getDrawable(0);
-        ta.recycle();
-
-        LinearLayout mLecLinearLayout = (LinearLayout) mView.findViewById(R.id.lec_list);
-        SectionListAdapter LecAdapter = new SectionListAdapter(mActivity, R.layout.section_item, mFetchedResult);
-        for (int i = 0; i < LecAdapter.getCount(); i++) {
-            View view = LecAdapter.getView(i, null, mLecLinearLayout);
-            mLecLinearLayout.addView(view);
-            mLecLinearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_BEGINNING);
-            mLecLinearLayout.setDividerDrawable(divider);
+        jobShortLists = mFetchedResult.getParcelableArrayList("jobShortList");
+        for(int i = 0; i < jobShortLists.size(); ++i) {
+            adapter.add(jobShortLists.get(i));
+            adapter.notifyDataSetChanged();
         }
-
-        TextView lec = (TextView) mView.findViewById(R.id.lec);
-        if (lec != null) {
-            lec.setVisibility(View.VISIBLE);
-        }
-
-        if (mFetchedResult.getBoolean("has_tst", false)) {
-            TextView tst = (TextView) mView.findViewById(R.id.tst);
-            if (tst != null) {
-                tst.setVisibility(View.VISIBLE);
-            }
-
-            LinearLayout mTstLinearLayout = (LinearLayout) mView.findViewById(R.id.tst_list);
-            TstListAdapter TstAdapter = new TstListAdapter(mActivity, R.layout.section_item, mFetchedResult);
-            for (int i = 0; i < TstAdapter.getCount(); i++) {
-                View view = TstAdapter.getView(i, null, mTstLinearLayout);
-                mTstLinearLayout.addView(view);
-                mTstLinearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_BEGINNING);
-                mTstLinearLayout.setDividerDrawable(divider);
-            }
-        }
-
-        if (mFetchedResult.getBoolean("has_tut", false)) {
-            TextView tut = (TextView) mView.findViewById(R.id.tut);
-            if (tut != null) {
-                tut.setVisibility(View.VISIBLE);
-            }
-
-            LinearLayout mTutLinearLayout = (LinearLayout) mView.findViewById(R.id.tut_list);
-            TutListAdapter TutAdapter = new TutListAdapter(mActivity, R.layout.section_item, mFetchedResult);
-            for (int i = 0; i < TutAdapter.getCount(); i++) {
-                View view = TutAdapter.getView(i, null, mTutLinearLayout);
-                mTutLinearLayout.addView(view);
-                mTutLinearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_BEGINNING);
-                mTutLinearLayout.setDividerDrawable(divider);
-            }
-        }*/
     }
 
 

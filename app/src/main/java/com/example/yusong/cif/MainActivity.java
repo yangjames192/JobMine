@@ -43,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startDetailActivity(String user, String password) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra("userName", user);
         intent.putExtra("pass", password);
         startActivity(intent);
+        finish();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

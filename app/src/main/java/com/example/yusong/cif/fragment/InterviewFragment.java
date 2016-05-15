@@ -29,7 +29,7 @@ public class InterviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.job_short_list_fragment, container, false);
+        mView = inflater.inflate(R.layout.interview_fragment, container, false);
 
         //setupLists();
 

@@ -26,7 +26,8 @@ import com.example.yusong.cif.fetchBack.JobFetchTask;
  * Created by Yusong on 2016-05-14.
  */
 public class DetailFragment extends Fragment {
-    private String mCourse;
+    private String userName;
+    private String pass;
     private Activity mActivity;
     private View mView;
     private float defaultElevation;
@@ -39,6 +40,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (mView == null) {
+            userName = getArguments().getString("userName");
+            pass = getArguments().getString("pass");
+
             mView = inflater.inflate(R.layout.detail_fragment, container, false);
             generateView();
         }
@@ -98,7 +102,7 @@ public class DetailFragment extends Fragment {
                 mProgDialog.dismiss();
             }
         });
-        jobFetchTask.execute();
+        jobFetchTask.execute(userName, pass);
     }
 
     private void showProgressDialog() {

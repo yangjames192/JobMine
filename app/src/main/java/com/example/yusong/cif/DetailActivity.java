@@ -29,9 +29,15 @@ public class DetailActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         pass = intent.getStringExtra("pass");
 
-        DetailFragment mSearchFragment = new DetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("userName", userName);
+        bundle.putString("pass", pass);
+
+        DetailFragment mDetailFragment = new DetailFragment();
+        mDetailFragment.setArguments(bundle);
+
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, mSearchFragment)
+                .replace(R.id.container, mDetailFragment)
                 .addToBackStack("7")
                 .commit();
     }

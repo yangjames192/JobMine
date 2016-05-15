@@ -42,19 +42,19 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
     protected Bundle doInBackground(String...params) {
         Bundle result = new Bundle();
 
-        fetchJob(result);
+        fetchJob(result, params[0], params[1]);
 
         return result;
     }
 
-    private Bundle fetchJob(Bundle bundle) {
+    private Bundle fetchJob(Bundle bundle, String user, String pass) {
 
         try{
             String loginUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/?cmd=login";
             Connection.Response res = Jsoup
                     .connect(loginUrl)
-                    .data("userid", "y294yang")
-                    .data("pwd", "Yys@19920606")
+                    .data("userid", user)
+                    .data("pwd", pass)
                     .data("submit", "Submit")
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .method(Connection.Method.POST).timeout(5000).execute();

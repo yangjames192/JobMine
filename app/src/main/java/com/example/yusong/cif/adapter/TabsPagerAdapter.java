@@ -15,12 +15,13 @@ import com.example.yusong.cif.R;
 import com.example.yusong.cif.fragment.ApplicationFragment;
 import com.example.yusong.cif.fragment.InterviewFragment;
 import com.example.yusong.cif.fragment.JobShortListFragment;
+import com.example.yusong.cif.fragment.UserSettingFragment;
 
 /**
  * Created by Yusong on 2016-05-14.
  */
 public class TabsPagerAdapter extends FragmentStatePagerAdapter {
-    final int PAGE_COUNT = 3;
+    final int PAGE_COUNT = 4;
     private String tabTitle[];
     private Context mContext;
     private Bundle mFetchedResult;
@@ -31,7 +32,8 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
         this.tabTitle = new String[] {
                 "Job Short List",
                 "Application",
-                "Interviews"
+                "Interviews",
+                "User Settings"
         };
     }
 
@@ -55,6 +57,10 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
                 InterviewFragment interviewFragment = new InterviewFragment();
                 interviewFragment.setArguments(mFetchedResult);
                 return interviewFragment;
+            case 3:
+                UserSettingFragment userSettingFragment = new UserSettingFragment();
+                //interviewFragment.setArguments(mFetchedResult);
+                return userSettingFragment;
         }
         return new android.app.Fragment();
     }

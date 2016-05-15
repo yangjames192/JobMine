@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.yusong.cif.adapter.DetailListViewAdapter;
+import com.example.yusong.cif.fragment.DetailFragment;
 import com.example.yusong.cif.model.JobShortList;
 
 import org.jsoup.Connection;
@@ -36,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent(); // gets the previously created intent
@@ -45,13 +46,21 @@ public class DetailActivity extends AppCompatActivity {
 
         jobShortLists = new ArrayList<JobShortList>();
         adapter = new DetailListViewAdapter(this, jobShortLists);
-        lv = (ListView) findViewById(R.id.listView);
-        lv.setAdapter(adapter);
+        /*lv = (ListView) findViewById(R.id.listView);
+        lv.setAdapter(adapter);*/
 
-        new AddStringTask().execute();
+        //new AddStringTask().execute();
 
         progress = new ProgressDialog(this);
-        progress.show();
+        //progress.show();
+
+        DetailFragment mSearchFragment = new DetailFragment();
+        Bundle args = new Bundle();
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, mSearchFragment)
+                .addToBackStack("7")
+                .commit();
     }
 
     class AddStringTask extends AsyncTask<Void, JobShortList, Void> {

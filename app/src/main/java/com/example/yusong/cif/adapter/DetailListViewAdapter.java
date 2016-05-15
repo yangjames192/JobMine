@@ -55,11 +55,13 @@ public class DetailListViewAdapter extends BaseAdapter {
         TextView company = (TextView)rowView.findViewById(R.id.company);
         TextView location = (TextView)rowView.findViewById(R.id.location);
         TextView lastDay = (TextView)rowView.findViewById(R.id.lastDay);
+        TextView numApp = (TextView)rowView.findViewById(R.id.numApp);
 
         jobTitle.setText(job.jobTitle);
         company.setText(job.employerName);
         location.setText(job.location);
         lastDay.setText(job.lastDateApply);
+        numApp.setText(job.numApps);
 
         if(job.apply.equals("Already Applied")) {
             rowView.setBackgroundColor(Color.parseColor("#7CFC00"));

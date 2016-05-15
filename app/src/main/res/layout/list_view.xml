@@ -4,51 +4,86 @@
     android:layout_height="match_parent"
     android:background="#D3D3D3">
 
-    <TextView
-        android:layout_width="200dp"
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="job title"
-        android:gravity="center_horizontal|center_vertical"
-        android:textAlignment="gravity"
-        android:id="@+id/jobTitle"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/company"
-        android:layout_toStartOf="@+id/company" />
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".60"
+            android:layout_height="40dp"
+            android:text="job title"
+            android:gravity="left|center_vertical"
+            android:textAlignment="gravity"
+            android:id="@+id/jobTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/company"
+            android:layout_toStartOf="@+id/company" />
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:text="company"
-        android:gravity="center_horizontal|center_vertical"
-        android:textAlignment="gravity"
-        android:id="@+id/company"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:layout_width="0dp"
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:text="location"
-        android:gravity="center_horizontal|center_vertical"
-        android:textAlignment="gravity"
-        android:id="@+id/location"
-        android:layout_below="@+id/jobTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/lastDay"
-        android:layout_toStartOf="@+id/lastDay" />
+            android:layout_weight=".40"
+            android:layout_height="40dp"
+            android:text="company"
+            android:gravity="left|center_vertical"
+            android:textAlignment="gravity"
+            android:id="@+id/company"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".60"
+                android:layout_height="40dp"
+                android:text="location"
+                android:gravity="left|center_vertical"
+                android:textAlignment="gravity"
+                android:id="@+id/location"
+                android:layout_below="@+id/jobTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/lastDay"
+                android:layout_toStartOf="@+id/lastDay" />
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:text="lastDayApply"
-        android:gravity="center_horizontal|center_vertical"
-        android:textAlignment="gravity"
-        android:id="@+id/lastDay"
-        android:layout_below="@+id/company"
-        android:layout_alignRight="@+id/company"
-        android:layout_alignEnd="@+id/company" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".30"
+                android:layout_height="40dp"
+                android:text="lastDayApply"
+                android:gravity="left|center_vertical"
+                android:textAlignment="gravity"
+                android:id="@+id/lastDay"
+                android:layout_below="@+id/company"
+                android:layout_alignRight="@+id/company"
+                android:layout_alignEnd="@+id/company" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".10"
+                android:layout_height="40dp"
+                android:text="num"
+                android:gravity="center_horizontal|center_vertical"
+                android:textAlignment="gravity"
+                android:id="@+id/numApp" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

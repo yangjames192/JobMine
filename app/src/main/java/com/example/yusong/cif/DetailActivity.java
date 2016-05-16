@@ -1,17 +1,11 @@
 package com.example.yusong.cif;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ListView;
 
-import com.example.yusong.cif.adapter.DetailListViewAdapter;
 import com.example.yusong.cif.fragment.DetailFragment;
-import com.example.yusong.cif.model.JobShortList;
-
-import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Yusong on 2016-05-13.
  */
-public class DetailListViewAdapter extends BaseAdapter {
+public class JobShortListViewAdapter extends BaseAdapter {
     // instance variables
     ArrayList<JobShortList> jobShortLists;
     Context context;
@@ -24,7 +24,7 @@ public class DetailListViewAdapter extends BaseAdapter {
     private static LayoutInflater inflater=null;
 
     // constructor
-    public DetailListViewAdapter(Context context, ArrayList<JobShortList> jobShortLists) {
+    public JobShortListViewAdapter(Context context, ArrayList<JobShortList> jobShortLists) {
         this.jobShortLists = jobShortLists;
         this.context=context;
         inflater = ( LayoutInflater )context.
@@ -48,7 +48,7 @@ public class DetailListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView;
-        rowView = inflater.inflate(R.layout.list_view, null);
+        rowView = inflater.inflate(R.layout.job_short_list_view, null);
 
         JobShortList job = jobShortLists.get(position);
         TextView jobTitle = (TextView)rowView.findViewById(R.id.jobTitle);

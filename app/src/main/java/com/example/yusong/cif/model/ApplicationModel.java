@@ -12,9 +12,6 @@ public class ApplicationModel implements Parcelable {
     public String jobID; // job identifier
     public String jobTitle; //job title
     public String employerName;
-    public String unitName;
-    public String location;
-    public String apply;
     public String lastDateApply;
     public String numApps;
     public String term;

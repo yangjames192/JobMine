@@ -140,26 +140,9 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
                 int numApps = Integer.parseInt(numApp.text().split(" ")[2]);
 
-                Element table = iframeContentDoc.select("table[id=UW_CO_STUJOBLST$scrolli$0]").get(1);
-
+                Element table = iframeContentDoc.select("table[id=UW_CO_APPS_VW2$scrolli$0]").get(1);
 
                 for (int i = 0; i < numApps; ++i) {
-                    System.out.print(table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_JB_TITLE2$span$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_JOBINFOVW_UW_CO_PARENT_NAME$26$$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_TERMCALND_UW_CO_DESCR_30$29$$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_JOBSTATVW_UW_CO_JOB_STATUS$30$$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_APPSTATVW_UW_CO_APPL_STATUS$31$$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_JOBINFOVW_UW_CO_CHAR_DATE$34$$" + i + "]").text());
-
-                    System.out.print(table.select("span[id=UW_CO_JOBAPP_CT_UW_CO_MAX_RESUMES$35$$" + i + "]").text());
-
                     ApplicationModel app = new ApplicationModel(
                             table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text(),
                             table.select("span[id=UW_CO_JB_TITLE2$span$" + i + "]").text(),
@@ -172,10 +155,10 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
                     applicationList.add(app);
                 }
-
             }
 
             bundle.putParcelableArrayList("jobShortList", jobShortLists);
+            bundle.putParcelableArrayList("applicationList", applicationList);
 
             return bundle;
 

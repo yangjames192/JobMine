@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.yusong.cif.R;
-import com.example.yusong.cif.adapter.DetailListViewAdapter;
+import com.example.yusong.cif.adapter.JobShortListViewAdapter;
 import com.example.yusong.cif.model.JobShortList;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class JobShortListFragment extends Fragment {
     private View mView;
     private Bundle mFetchedResult;
     public ArrayList<JobShortList> jobShortLists;
-    public DetailListViewAdapter adapter;
+    public JobShortListViewAdapter adapter;
     public ListView lv;
 
     @Override
@@ -38,7 +38,7 @@ public class JobShortListFragment extends Fragment {
         mView = inflater.inflate(R.layout.job_short_list_fragment, container, false);
 
         jobShortLists = new ArrayList<JobShortList>();
-        adapter = new DetailListViewAdapter(getActivity(), jobShortLists);
+        adapter = new JobShortListViewAdapter(getActivity(), jobShortLists);
         lv = (ListView) mView.findViewById(R.id.listView);
         lv.setAdapter(adapter);
         setupLists();

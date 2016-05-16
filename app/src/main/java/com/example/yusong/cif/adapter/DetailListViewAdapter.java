@@ -63,7 +63,7 @@ public class DetailListViewAdapter extends BaseAdapter {
         lastDay.setText(job.lastDateApply);
         numApp.setText(job.numApps);
 
-        if(job.apply.equals("Already Applied")) {
+        if("Already Applied".equals(job.apply)) {
             rowView.setBackgroundColor(Color.parseColor("#7CFC00"));
         }
 

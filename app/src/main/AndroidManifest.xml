@@ -24,6 +24,15 @@
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service
+            android:name=".service.InterviewCheckService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".service.ServiceAlarmReceiver"
+            android:process=":remote" >
+        </receiver>
     </application>
 
 </manifest>

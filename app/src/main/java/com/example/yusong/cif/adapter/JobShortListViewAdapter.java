@@ -64,7 +64,7 @@ public class JobShortListViewAdapter extends BaseAdapter {
         numApp.setText(job.numApps);
 
         if("Already Applied".equals(job.apply)) {
-            rowView.setBackgroundColor(Color.parseColor("#7CFC00"));
+            rowView.setBackgroundColor(Color.parseColor("#008000"));
         }
 
         return rowView;

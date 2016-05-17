@@ -76,7 +76,7 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
                     .timeout(6000)
                     .cookies(loginCookies)
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                    .execute().parse();
+                    .get();
 
             Element iframe = doc.select("iframe").first();
             String iframeSrc = iframe.attr("src");
@@ -122,7 +122,7 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
                     .timeout(6000)
                     .cookies(loginCookies)
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                    .execute().parse();
+                    .get();
 
             iframe = doc.select("iframe").first();
             iframeSrc = iframe.attr("src");

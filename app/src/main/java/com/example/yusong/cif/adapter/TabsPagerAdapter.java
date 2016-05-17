@@ -31,7 +31,7 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
         this.mFetchedResult = bundle;
         this.tabTitle = new String[] {
                 "Job Short List",
-                "ApplicationModel",
+                "Applications",
                 "Interviews",
                 "User Settings"
         };

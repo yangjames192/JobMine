@@ -1,19 +1,28 @@
 package com.example.yusong.cif.fragment;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.example.yusong.cif.MainActivity;
 import com.example.yusong.cif.R;
+import com.example.yusong.cif.service.InterviewCheckService;
+import com.example.yusong.cif.service.ServiceAlarmReceiver;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,8 +42,20 @@ public class UserSettingFragment extends PreferenceFragment {
         Preference clean_reminder_pref = (Preference) findPreference("pref_key_clean_reminder_db");
         clean_reminder_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), ServiceAlarmReceiver.class);
+                // Create a PendingIntent to be triggered when the alarm goes off
+                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), ServiceAlarmReceiver.REQUEST_CODE,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                // Setup periodic alarm every 5 seconds
+                long firstMillis = System.currentTimeMillis(); // alarm is set right away
+                AlarmManager alarm = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+                // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+                alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                        AlarmManager.INTERVAL_HALF_HOUR, pIntent);
+
                 // show snackBar
-                Snackbar.make(getView(), "All reminders removed", Snackbar.LENGTH_SHORT)
+                Snackbar.make(getView(), "Enabled reminder", Snackbar.LENGTH_SHORT)
                         .show();
                 return true;
             }

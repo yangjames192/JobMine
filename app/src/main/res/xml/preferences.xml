@@ -4,22 +4,22 @@
         android:title="@string/title_general"
         >
         <SwitchPreference
-            android:key="pref_key_auto_import_final"
-            android:title="t1"
-            android:summary="wtf"
-            android:defaultValue="true" />
+            android:key="pref_key_enable_interview_reminder"
+            android:title="Enable Interview Reminder"
+            android:summary="Enable interview reminder"
+            android:defaultValue="false" />
 
         <SwitchPreference
             android:key="pref_key_sync_FB_event"
             android:title="t2"
             android:summary="wtf2"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <SwitchPreference
             android:key="pref_key_exam_warning"
             android:title="t3"
             android:summary="wtf3"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <Preference
             android:key="pref_key_clean_course_db"
@@ -27,7 +27,7 @@
 
         <Preference
             android:key="pref_key_clean_reminder_db"
-            android:title="Enable interview reminder"/>
+            android:title="title_1"/>
 
     </PreferenceCategory>
 

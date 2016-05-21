@@ -13,8 +13,10 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.yusong.cif.MainActivity;
@@ -39,26 +41,44 @@ public class UserSettingFragment extends PreferenceFragment {
 
         addPreferencesFromResource(R.xml.preferences);
 
+        SwitchPreference interviewReminder = (SwitchPreference) findPreference("pref_key_enable_interview_reminder");
+        interviewReminder.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Intent intent = new Intent(getActivity(), ServiceAlarmReceiver.class);
+
+                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), ServiceAlarmReceiver.REQUEST_CODE,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                long firstMillis = System.currentTimeMillis(); // alarm is set right away
+                AlarmManager alarm = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+                if((boolean)newValue) {
+                    Log.d("setting", "ture");
+
+                    //set alarm on
+                    alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                            AlarmManager.INTERVAL_HALF_DAY, pIntent);
+
+                    // show snackBar
+                    Snackbar.make(getView(), "Enabled reminder", Snackbar.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Log.d("setting", "false");
+
+                    //cancel alarm
+                    alarm.cancel(pIntent);
+
+                    Snackbar.make(getView(), "Canceled reminder", Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+                return true;
+            }
+        });
         Preference clean_reminder_pref = (Preference) findPreference("pref_key_clean_reminder_db");
         clean_reminder_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(getActivity(), ServiceAlarmReceiver.class);
-                // Create a PendingIntent to be triggered when the alarm goes off
-                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), ServiceAlarmReceiver.REQUEST_CODE,
-                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                // Setup periodic alarm every 5 seconds
-                long firstMillis = System.currentTimeMillis(); // alarm is set right away
-                AlarmManager alarm = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-                // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-                alarm.cancel(pIntent);
 
-                alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                        AlarmManager.INTERVAL_HALF_DAY, pIntent);
-
-                // show snackBar
-                Snackbar.make(getView(), "Enabled reminder", Snackbar.LENGTH_SHORT)
-                        .show();
                 return true;
             }
         });

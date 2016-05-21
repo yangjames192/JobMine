@@ -62,8 +62,10 @@ public class ApplicationListViewAdapter extends BaseAdapter {
         lastDay.setText(app.lastDateApply);
         numApp.setText(app.numApps);
 
-        if("Already Applied".equals(app.appStatus)) {
-            rowView.setBackgroundColor(Color.parseColor("#7CFC00"));
+        if("Not Selected".equals(app.appStatus)) {
+            rowView.setBackgroundColor(Color.parseColor("#FF0000"));
+        } else if("Selected".equals(app.appStatus)) {
+            rowView.setBackgroundColor(Color.parseColor("#008000"));
         }
 
         return rowView;

@@ -30,11 +30,11 @@ public class InterviewCheckService extends IntentService {
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
         //String url = intent.getStringExtra("url");
         Log.d("check service: ", "check service");
-        try {
+        /*try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         receiver.send(0, Bundle.EMPTY);
     }
 

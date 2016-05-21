@@ -3,6 +3,7 @@ package com.example.yusong.cif.service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.ResultReceiver;
 
 
@@ -13,6 +14,7 @@ public class InterviewCheckResultReceiver extends ResultReceiver {
     private Receiver receiver;
 
     // Constructor takes a handler
+
     public InterviewCheckResultReceiver(Handler handler) {
         super(handler);
     }

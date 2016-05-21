@@ -136,7 +136,7 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
                         .cookies(loginCookies)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").get();
 
-                Element numApp = iframeContentDoc.select("span[class=PSGRIDCOUNTER]").first();
+                Element numApp = iframeContentDoc.select("span[class=PSGRIDCOUNTER]").get(1);
 
                 int numApps = Integer.parseInt(numApp.text().split(" ")[2]);
 

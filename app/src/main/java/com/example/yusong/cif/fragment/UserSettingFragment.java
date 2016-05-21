@@ -51,8 +51,10 @@ public class UserSettingFragment extends PreferenceFragment {
                 AlarmManager alarm = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                 // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
                 // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+                alarm.cancel(pIntent);
+
                 alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                        AlarmManager.INTERVAL_HALF_HOUR, pIntent);
+                        AlarmManager.INTERVAL_HALF_DAY, pIntent);
 
                 // show snackBar
                 Snackbar.make(getView(), "Enabled reminder", Snackbar.LENGTH_SHORT)

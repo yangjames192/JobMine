@@ -41,8 +41,8 @@ public class ServiceAlarmReceiver extends BroadcastReceiver {
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.ic_launcher)
-                                .setContentTitle("My notification")
-                                .setContentText("Hello World!");
+                                .setContentTitle("Decline Application")
+                                .setContentText(resultData.getString("company"));
                 Intent resultIntent = new Intent(context,ResultActivity.class);
 
                 // Because clicking the notification opens a new ("special") activity, there's
@@ -72,8 +72,14 @@ public class ServiceAlarmReceiver extends BroadcastReceiver {
 
         Log.d("serviceAlarm: ", "received alarm");
 
-        Intent i = new Intent(context, InterviewCheckService.class);
-        i.putExtra("receiver", interviewCheckResultReceiver);
-        context.startService(i);
+        if("declined".equals(intent.getStringExtra("type"))) {
+            Intent i = new Intent(context, DeclinedApplicationCheckService.class);
+            i.putExtra("receiver", interviewCheckResultReceiver);
+            context.startService(i);
+        } else {
+            Intent i = new Intent(context, InterviewCheckService.class);
+            i.putExtra("receiver", interviewCheckResultReceiver);
+            context.startService(i);
+        }
     }
 }

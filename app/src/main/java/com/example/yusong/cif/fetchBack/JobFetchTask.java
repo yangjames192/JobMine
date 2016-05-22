@@ -56,6 +56,7 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
         String applicationUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/EMPLOYEE/WORK/c/UW_CO_STUDENTS.UW_CO_APP_SUMMARY.GBL?pslnkid=UW_CO_APP_SUMMARY_LINK&FolderPath=PORTAL_ROOT_OBJECT.UW_CO_APP_SUMMARY_LINK&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder";
 
         try{
+            long start = System.currentTimeMillis();
             String loginUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/?cmd=login";
             Connection.Response res = Jsoup
                     .connect(loginUrl)
@@ -67,6 +68,10 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
             Map<String, String> loginCookies = res.cookies();
 
+            long end= System.currentTimeMillis();
+            Log.d("time1", " "+(end-start));
+
+            start = System.currentTimeMillis();
             //parse Job short list page
             Document doc = Jsoup
                     .connect(shortListUrl)
@@ -80,9 +85,12 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
             Element iframe = doc.select("iframe").first();
             String iframeSrc = iframe.attr("src");
+            end = System.currentTimeMillis();
+            Log.d("time2", " "+(end-start));
 
             if(iframeSrc != null)
             {
+                start = System.currentTimeMillis();
                 Document iframeContentDoc = Jsoup.connect(iframeSrc).followRedirects(true)
                         .ignoreContentType(true)
                         .maxBodySize(0)
@@ -95,8 +103,10 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
                 int numApps = Integer.parseInt(numApp.text().split(" ")[2]);
 
                 Element table = iframeContentDoc.select("table[id=UW_CO_STUJOBLST$scrolli$0]").get(1);
+                end = System.currentTimeMillis();
+                Log.d("time3", " "+(end-start));
 
-
+                start = System.currentTimeMillis();
                 for (int i = 0; i < numApps; ++i) {
                     JobShortList job = new JobShortList(
                             table.select("span[id=UW_CO_STUJOBLST_UW_CO_JOB_ID$" + i + "]").text(),
@@ -110,7 +120,8 @@ public class JobFetchTask extends AsyncTask<String, Void, Bundle> {
 
                     jobShortLists.add(job);
                 }
-
+                end = System.currentTimeMillis();
+                Log.d("time4", " "+(end-start));
             } //end parse job short list page
 
             // parse application page

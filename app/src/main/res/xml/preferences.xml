@@ -10,9 +10,9 @@
             android:defaultValue="false" />
 
         <SwitchPreference
-            android:key="pref_key_sync_FB_event"
-            android:title="t2"
-            android:summary="wtf2"
+            android:key="pref_key_enable_decline_reminder"
+            android:title="Enable Declined Application Reminder"
+            android:summary="Enable declined application reminder"
             android:defaultValue="false" />
 
         <SwitchPreference

@@ -7,24 +7,25 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.example.yusong.cif.model.ApplicationModel;
+import com.example.yusong.cif.model.JobShortList;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
- * Created by Yusong on 2016-05-16.
+ * Created by Yusong on 2016-05-21.
  */
-public class InterviewCheckService extends IntentService {
+public class DeclinedApplicationCheckService extends IntentService {
 
     // constructor
 
-    public InterviewCheckService() {
-        super(InterviewCheckService.class.getName());
+    public DeclinedApplicationCheckService() {
+        super(DeclinedApplicationCheckService.class.getName());
     }
 
     @Override
@@ -37,7 +38,6 @@ public class InterviewCheckService extends IntentService {
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
         //String url = intent.getStringExtra("url");
         Log.d("check service: ", "check service");
-
 
         Bundle bundle = new Bundle();
 
@@ -135,6 +135,4 @@ public class InterviewCheckService extends IntentService {
 
         receiver.send(0, bundle);
     }
-
-
 }

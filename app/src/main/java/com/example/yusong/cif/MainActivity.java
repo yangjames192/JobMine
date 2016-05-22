@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.yusong.cif.utils.Connections;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,11 +46,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startDetailActivity(String user, String password) {
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra("userName", user);
-        intent.putExtra("pass", password);
-        startActivity(intent);
-        finish();
+        if(!Connections.isNetWorkAvailable(this)) {
+            Toast.makeText(this, "Network unavailable, Please retry!",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("userName", user);
+            intent.putExtra("pass", password);
+            startActivity(intent);
+            finish();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

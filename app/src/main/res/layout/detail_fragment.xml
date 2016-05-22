@@ -18,7 +18,36 @@
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_gravity="center"
-            android:gravity="center"/>
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/error_view_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/error_view_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/error_view_icon"
+                android:text="ttttt"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/error_view_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:text="Retry"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
     <LinearLayout

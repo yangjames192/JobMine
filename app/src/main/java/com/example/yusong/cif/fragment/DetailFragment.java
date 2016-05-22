@@ -21,6 +21,7 @@ import com.example.yusong.cif.R;
 import com.example.yusong.cif.adapter.TabsPagerAdapter;
 import com.example.yusong.cif.callback.AsyncTaskCallbackInterface;
 import com.example.yusong.cif.fetchBack.JobFetchTask;
+import com.example.yusong.cif.utils.Connections;
 
 /**
  * Created by Yusong on 2016-05-14.
@@ -87,22 +88,45 @@ public class DetailFragment extends Fragment {
         tabLayout.setVisibility(View.VISIBLE);
     }
 
-    private void generateView() {
-        showProgressDialog();
+    private void showErrorMessage() {
+        final LinearLayout errorView = (LinearLayout) mView.findViewById(R.id.error_view_layout);
+        TextView errorMessage = (TextView) mView.findViewById(R.id.error_view_message);
+        ImageView errorIcon = (ImageView) mView.findViewById(R.id.error_view_icon);
+        Button errorButton = (Button) mView.findViewById(R.id.error_view_button);
 
-
-        JobFetchTask jobFetchTask = new JobFetchTask(mActivity, new AsyncTaskCallbackInterface() {
+        errorMessage.setText("Network unavailable");
+        //errorIcon.setImageResource(R.drawable.ic_cloud_off_black_36dp);
+        errorButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onOperationComplete(Bundle bundle) {
-
-                setupTabs(bundle);
-                LinearLayout searchLayout = (LinearLayout) mView.findViewById(R.id.search_detail_layout);
-                searchLayout.setVisibility(View.VISIBLE);
-
-                mProgDialog.dismiss();
+            public void onClick(View v) {
+                errorView.setVisibility(View.GONE);
+                generateView();
             }
         });
-        jobFetchTask.execute(userName, pass);
+
+        errorView.setVisibility(View.VISIBLE);
+    }
+
+    private void generateView() {
+        // check network connections first
+        if(!Connections.isNetWorkAvailable(getActivity())) {
+            showErrorMessage();
+        } else {
+            showProgressDialog();
+
+            JobFetchTask jobFetchTask = new JobFetchTask(mActivity, new AsyncTaskCallbackInterface() {
+                @Override
+                public void onOperationComplete(Bundle bundle) {
+
+                    setupTabs(bundle);
+                    LinearLayout searchLayout = (LinearLayout) mView.findViewById(R.id.search_detail_layout);
+                    searchLayout.setVisibility(View.VISIBLE);
+
+                    mProgDialog.dismiss();
+                }
+            });
+            jobFetchTask.execute(userName, pass);
+        }
     }
 
     private void showProgressDialog() {

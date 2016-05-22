@@ -35,38 +35,39 @@ public class ServiceAlarmReceiver extends BroadcastReceiver {
         interviewCheckResultReceiver.setReceiver(new InterviewCheckResultReceiver.Receiver(){
             @Override
             public void onReceiveResult(int resultCode, Bundle resultData) {
+                if(resultCode == 0) {
+                    Log.d("serviceAlarm: ", "result received");
+                    System.out.println("result received");
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(context)
+                                    .setSmallIcon(R.drawable.ic_launcher)
+                                    .setContentTitle("Decline Application")
+                                    .setContentText(resultData.getString("company"));
+                    Intent resultIntent = new Intent(context, ResultActivity.class);
 
-                Log.d("serviceAlarm: ", "result received");
-                System.out.println("result received");
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(R.drawable.ic_launcher)
-                                .setContentTitle("Decline Application")
-                                .setContentText(resultData.getString("company"));
-                Intent resultIntent = new Intent(context,ResultActivity.class);
+                    // Because clicking the notification opens a new ("special") activity, there's
+                    // no need to create an artificial back stack.
+                    PendingIntent resultPendingIntent =
+                            PendingIntent.getActivity(
+                                    context,
+                                    0,
+                                    resultIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
 
-                // Because clicking the notification opens a new ("special") activity, there's
-                // no need to create an artificial back stack.
-                PendingIntent resultPendingIntent =
-                        PendingIntent.getActivity(
-                                context,
-                                0,
-                                resultIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
+                    mBuilder.setContentIntent(resultPendingIntent);
 
-                mBuilder.setContentIntent(resultPendingIntent);
-
-                mBuilder.setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL)
-                        .setWhen(System.currentTimeMillis());
-                mBuilder.setTicker("wocao");
-                // Sets an ID for the notification
-                int mNotificationId = 001;
-                // Gets an instance of the NotificationManager service
-                NotificationManager mNotifyMgr =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                // Builds the notification and issues it.
-                mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                    mBuilder.setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL)
+                            .setWhen(System.currentTimeMillis());
+                    mBuilder.setTicker("wocao");
+                    // Sets an ID for the notification
+                    int mNotificationId = 001;
+                    // Gets an instance of the NotificationManager service
+                    NotificationManager mNotifyMgr =
+                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    // Builds the notification and issues it.
+                    mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                }
             }
         });
 

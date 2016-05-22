@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.yusong.cif.model.ApplicationModel;
 import com.example.yusong.cif.model.JobShortList;
+import com.example.yusong.cif.utils.Connections;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -40,6 +41,11 @@ public class DeclinedApplicationCheckService extends IntentService {
         Log.d("check service: ", "check service");
 
         Bundle bundle = new Bundle();
+
+        if(!Connections.isNetWorkAvailable(getApplicationContext())) {
+            receiver.send(-1, bundle);  //return code -1
+            return;
+        }
 
         String shortListUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/EMPLOYEE/WORK/c/UW_CO_STUDENTS.UW_CO_JOB_SLIST.GBL?pslnkid=UW_CO_JOB_SLIST_LINK&FolderPath=PORTAL_ROOT_OBJECT.UW_CO_JOB_SLIST_LINK&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder";
         String applicationUrl = "https://jobmine.ccol.uwaterloo.ca/psp/SS/EMPLOYEE/WORK/c/UW_CO_STUDENTS.UW_CO_APP_SUMMARY.GBL?pslnkid=UW_CO_APP_SUMMARY_LINK&FolderPath=PORTAL_ROOT_OBJECT.UW_CO_APP_SUMMARY_LINK&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder";
@@ -127,12 +133,16 @@ public class DeclinedApplicationCheckService extends IntentService {
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
-        receiver.send(0, bundle);
+        if(bundle.isEmpty()) {
+            receiver.send(1, bundle);  //return code 1, no matches
+            return;
+        }
+
+        receiver.send(0, bundle);  //return code 0
     }
 }

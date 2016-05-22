@@ -96,7 +96,7 @@ public class UserSettingFragment extends PreferenceFragment {
 
                     //set alarm on
                     alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                            AlarmManager.INTERVAL_HALF_DAY, pIntent);
+                            AlarmManager.INTERVAL_HOUR, pIntent);
 
                     // show snackBar
                     Snackbar.make(getView(), "Enabled reminder", Snackbar.LENGTH_SHORT)

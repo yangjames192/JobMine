@@ -16,7 +16,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Yusong on 2016-05-21.
@@ -114,9 +117,16 @@ public class DeclinedApplicationCheckService extends IntentService {
 
                 Element table = iframeContentDoc.select("table[id=UW_CO_APPS_VW2$scrolli$0]").get(1);
 
+                ArrayList<String> declinedApps = new ArrayList<String>();
+                Set<String> old_declined = pref.getStringSet("declined", null);
+
+                if(old_declined == null) {
+                    old_declined = new HashSet<String>();
+                }
+
                 for (int i = 0; i < numApps; ++i) {
 
-                            /*//table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text(),
+                            /*//,
                             table.select("span[id=UW_CO_JB_TITLE2$span$" + i + "]").text(),
                             table.select("span[id=UW_CO_JOBINFOVW_UW_CO_PARENT_NAME$26$$" + i + "]").text(),
                             table.select("span[id=UW_CO_JOBINFOVW_UW_CO_CHAR_DATE$34$$" + i + "]").text(),
@@ -128,9 +138,25 @@ public class DeclinedApplicationCheckService extends IntentService {
                     String employer = table.select("span[id=UW_CO_JOBINFOVW_UW_CO_PARENT_NAME$26$$" + i + "]").text();
                     String appStatus = table.select("span[id=UW_CO_APPSTATVW_UW_CO_APPL_STATUS$31$$" + i + "]").text();
 
+                    String jobID = table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text();
+
+
                     if("Not Selected".equals(appStatus)) {
-                        bundle.putString("company", employer);
+                        if(!old_declined.contains(jobID)) {
+                            old_declined.add(jobID);
+                            declinedApps.add(employer);
+                        }
+                        //bundle.putString("company", employer);
                     }
+                }
+
+                SharedPreferences.Editor editor = pref.edit();
+
+                editor.putStringSet("declined", old_declined);
+                editor.commit();
+
+                if(!declinedApps.isEmpty()) {
+                    bundle.putStringArrayList("Declined", declinedApps);
                 }
             }
         } catch (Exception e) {

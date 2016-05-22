@@ -12,7 +12,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -108,6 +111,13 @@ public class InterviewCheckService extends IntentService {
 
                 Element table = iframeContentDoc.select("table[id=UW_CO_APPS_VW2$scrolli$0]").get(1);
 
+                ArrayList<String> interview = new ArrayList<String>();
+                Set<String> old_interview = pref.getStringSet("interview", null);
+
+                if(old_interview == null) {
+                    old_interview = new HashSet<String>();
+                }
+
                 for (int i = 0; i < numApps; ++i) {
 
                             /*//table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text(),
@@ -121,10 +131,25 @@ public class InterviewCheckService extends IntentService {
 
                     String employer = table.select("span[id=UW_CO_JOBINFOVW_UW_CO_PARENT_NAME$26$$" + i + "]").text();
                     String appStatus = table.select("span[id=UW_CO_APPSTATVW_UW_CO_APPL_STATUS$31$$" + i + "]").text();
+                    String jobID = table.select("span[id=UW_CO_APPS_VW2_UW_CO_JOB_ID$" + i + "]").text();
 
-                    if("Not Selected".equals(appStatus)) {
-                        bundle.putString("company", employer);
+                    if("Selected".equals(appStatus)) {
+                        if(!old_interview.contains(jobID)) {
+                            old_interview.add(jobID);
+                            interview.add(employer);
+                            Log.d("matches:", employer);
+                        }
+                        //bundle.putString("company", employer);
                     }
+                }
+
+                SharedPreferences.Editor editor = pref.edit();
+
+                editor.putStringSet("interview", old_interview);
+                editor.commit();
+
+                if(!interview.isEmpty()) {
+                    bundle.putStringArrayList("Interview", interview);
                 }
             }
 

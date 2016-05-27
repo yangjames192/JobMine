@@ -49,7 +49,7 @@ public class UserSettingFragment extends PreferenceFragment {
                 Intent intent = new Intent(getActivity(), ServiceAlarmReceiver.class);
                 intent.putExtra("type", "accepted");
 
-                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), ServiceAlarmReceiver.REQUEST_CODE,
+                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), 2,
                         intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 long firstMillis = System.currentTimeMillis(); // alarm is set right away
@@ -85,7 +85,7 @@ public class UserSettingFragment extends PreferenceFragment {
                 Intent intent = new Intent(getActivity(), ServiceAlarmReceiver.class);
                 intent.putExtra("type", "declined");
 
-                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), ServiceAlarmReceiver.REQUEST_CODE,
+                final PendingIntent pIntent = PendingIntent.getBroadcast(getActivity(), 1,
                         intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 long firstMillis = System.currentTimeMillis(); // alarm is set right away

@@ -63,7 +63,7 @@ public class ServiceAlarmReceiver extends BroadcastReceiver {
                             PendingIntent resultPendingIntent =
                                     PendingIntent.getActivity(
                                             context,
-                                            0,
+                                            i,
                                             resultIntent,
                                             PendingIntent.FLAG_UPDATE_CURRENT
                                     );
@@ -74,7 +74,7 @@ public class ServiceAlarmReceiver extends BroadcastReceiver {
                                     .setWhen(System.currentTimeMillis());
                             mBuilder.setTicker("declined");
                             // Sets an ID for the notification
-                            int mNotificationId = 001;
+                            int mNotificationId = i;
                             // Gets an instance of the NotificationManager service
                             NotificationManager mNotifyMgr =
                                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
